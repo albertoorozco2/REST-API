@@ -8,19 +8,15 @@ export function getHandlers(_userRepository: Repository<Users>) {
     
     const getTokenHandler = (req: Request, res: Response) => {
         (async () => {
-            console.log(" body received");
-
             const body = req.body;
             const email = body.email;
             const password = body.password;
             //console.log(body);
             if (!email || !password) {
-                console.log(" no password or nor email recived");
-                console.log(" 400");
-                res.status(400).send();
+                console.log(" 400 Bad Request!");
+                res.status(400).send("Bad Request!");
             } else {
-                console.log(" find user: ");
-                console.log(email);
+                console.log(" user "+email);
                 const user = await _userRepository.findOne({
                     where: {
                         email: email,
@@ -28,31 +24,21 @@ export function getHandlers(_userRepository: Repository<Users>) {
                     }
                 });
                 if (!user) {
-                    console.log("  user NO in system! ");
-                    console.log("  401");
-                    res.status(401).send();
+                    console.log("  401 Unathorized");
+                    res.status(401).send("Unathorized!");
                 } else {
-                    console.log("  user in system! ");
-
                     const payload = { id: user.id };
                     //const secret = process.env.AUTH_SECRET;
                     process.env.AUTH_SECRET = user.password;
                     const secret = process.env.AUTH_SECRET;
-                    //console.log(payload);
-                  //  console.log(secret);
-                  //  console.log(typeof(secret));
+
                     if (typeof secret === "string") {
-                       console.log("  generate token in system! ");
-
                         const token = jwt.sign(payload, secret);
+                        console.log("  Token generated and sent!");
                         res.json({ token: token });
-                         console.log("  token sent! ");
-
                     } else {
-                        console.log("  secret password no string error ");
-
-                        console.log("  500");
-                        res.status(500).send();
+                        console.log("  500 Internal Server Error!");
+                        res.status(500).send("Internal Server Error!");
                     }
                     
                 }

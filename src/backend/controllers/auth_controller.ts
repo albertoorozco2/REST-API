@@ -7,6 +7,8 @@ import * as jwt from "jsonwebtoken";
 export function getHandlers(_userRepository: Repository<Users>) {
     
     const getTokenHandler = (req: Request, res: Response) => {
+        console.log("/api/v1/auth/login POST returns an auth token");
+
         (async () => {
             const body = req.body;
             const email = body.email;
@@ -55,6 +57,6 @@ export function getHandlers(_userRepository: Repository<Users>) {
 export function getAuthRouter() {
     const handlers = getHandlers(getRepository());
     const authRouter = Router();
-    authRouter.post("/", handlers.getTokenHandler);
+    authRouter.post("/", handlers.getTokenHandler);//public
     return authRouter;
 }

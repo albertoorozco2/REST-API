@@ -1,10 +1,12 @@
 import { Router, Request, Response } from "express";
 import { getRepository } from "../respositories/link_repository";
+import { getRepositoryVote } from "../respositories/vote_repository";
 import { Repository } from "typeorm";
 import { Link } from "../entities/link";
+import { Vote } from "../entities/vote";
 import { authMiddleware } from "../middleware/auth_middleware";
 
-export function getHandlers(_linkRepository: Repository<Link>) {
+export function getHandlers(_linkRepository: Repository<Link>, _voteRepository: Repository<Vote>) {
     
     const getAllLinksHandler = (req: Request, res: Response) => {
         console.log("api/v1/links GET returns all links");
@@ -21,27 +23,8 @@ export function getHandlers(_linkRepository: Repository<Link>) {
             
     })();
 
-        // (async () => {
-        //     const links = await _linkRepository.find();
-
-        //     res.json(links).send();
-
-        // })();
     };
     
-    // const getLinkByIdHandler = (req: Request, res: Response) => {
-    //     const id = parseInt(req.params.id);
-    //     const link = _linkRepository.findOne({
-    //         where: {
-    //             id: id
-    //         }
-    //     });
-    //     if (link === undefined) {
-    //         res.status(404).send();
-    //     }
-    //     res.json(link).send();
-    // };
-
     const createLink = (req: Request, res: Response) => {
         (async () => {
             console.log("/api/v1/links POST creates a new link");
@@ -71,7 +54,9 @@ export function getHandlers(_linkRepository: Repository<Link>) {
 
 
     };
-const deleteMovie =  (req: Request, res: Response) => {
+
+
+    const deleteLink =  (req: Request, res: Response) => {
 
             (async () => {
 
@@ -107,27 +92,113 @@ const deleteMovie =  (req: Request, res: Response) => {
 
 
         })();
-};
+    };
+
+
+    const upVoteLink = (req: Request, res: Response) => {
+        (async () => {
+            console.log("/api/v1/links/:id/upvote POST upvote link");
+            const link = req.params.id;
+            const user = req.body.userId;
+            if (!link) {
+                 console.log(" 400 Bad request!");
+                res.status(400).send("Bad request!");
+            } else if (!user) {
+                 console.log(" 401 Unauthorized!");
+                res.status(401).send("Unauthorized!");
+            } else {
+                const upVoteLink = await _linkRepository.findOne({id: link }).catch((e: Error) => {
+                     console.log(" 500 Internal Server Error.");
+                     res.status(500).send(e.message); 
+                 });
+                const upVote = await _voteRepository.find({ link: link, user: user, isUpvote: true }).catch((e: Error) => {
+                     console.log(" 500 Internal Server Error.");
+                     res.status(500).send(e.message); 
+                 });
+                if(!upVoteLink)
+                {
+                    console.log(" 400 Bad Request! link does not exist");
+                    res.status(400).send("Bad Request! link does not exist");
+                } 
+                else if(String(upVote)==="")
+                {
+                    const upVote = await _voteRepository.save({ link: link, user: user, isUpvote: true }).catch((e: Error) => {
+                     console.log(" 500 Internal Server Error.");
+                     res.status(500).send(e.message); 
+                     });
+                    console.log(" upvoted saved sucessfully!");
+                    res.send("upvoted saved sucessfully!");
+                }else{
+                    console.log(" 400 Bad Request! upvote already registered");
+                    res.status(400).send("Bad Request! upvote already registered");
+                }
+
+            }            
+        })();
+    };
+
+    const downVoteLink = (req: Request, res: Response) => {
+        (async () => {
+            console.log("/api/v1/links/:id/downvote POST downvote link");
+            const link = req.params.id;
+            const user = req.body.userId;
+            if (!link) {
+                 console.log(" 400 Bad request!");
+                res.status(400).send("Bad request!");
+            } else if (!user) {
+                 console.log(" 401 Unauthorized!");
+                res.status(401).send("Unauthorized!");
+            } else {
+                const downVoteLink = await _linkRepository.findOne({id: link }).catch((e: Error) => {
+                     console.log(" 500 Internal Server Error.");
+                     res.status(500).send(e.message); 
+                 });
+                const downVote = await _voteRepository.find({ link: link, user: user, isUpvote: false }).catch((e: Error) => {
+                     console.log(" 500 Internal Server Error.");
+                     res.status(500).send(e.message); 
+                 });
+                if(!downVoteLink)
+                {
+                    console.log(" 400 Bad Request! link does not exist");
+                    res.status(400).send("Bad Request! link does not exist");
+                } 
+                else if(String(downVote)==="")
+                {
+                    const downVote = await _voteRepository.save({ link: link, user: user, isUpvote: false }).catch((e: Error) => {
+                     console.log(" 500 Internal Server Error.");
+                     res.status(500).send(e.message); 
+                     });
+                    console.log(" downvoted saved sucessfully!");
+                    res.send("downvoted saved sucessfully!");
+                }else{
+                    console.log(" 400 Bad Request! downvote already registered");
+                    res.status(400).send("Bad Request! downvote already registered");
+                }
+
+            }            
+        })();
+    };
+
 
 
     return {
         getAllLinksHandler,
-//        getLinkByIdHandler,
         createLink,
-        deleteMovie,
-
+        upVoteLink,
+        downVoteLink,
+        deleteLink,
     };
 
 }
 
 export function getLinksRouter() {
-    const handlers = getHandlers(getRepository());
+    const handlers = getHandlers(getRepository(),getRepositoryVote());
     const linkRouter = Router();
     linkRouter.get("/", handlers.getAllLinksHandler); // public
- //   linkRouter.get("/:id", handlers.getLinkByIdHandler); // public
     linkRouter.post("/", authMiddleware, handlers.createLink); // private
-    linkRouter.delete("/:id", authMiddleware, handlers.deleteMovie); // private
-//    linkRouter.delete("/:id", handlers.deleteMovie); // private
+    linkRouter.delete("/:id", authMiddleware, handlers.deleteLink); // private
+    linkRouter.post("/:id/upvote", authMiddleware, handlers.upVoteLink); // private
+    linkRouter.post("/:id/downvote", authMiddleware, handlers.downVoteLink); // private
 
     return linkRouter;
 }

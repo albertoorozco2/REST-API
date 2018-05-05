@@ -3,7 +3,7 @@ import { getRepository } from "../respositories/user_repository";
 
 const getUserRouter = Router();
 
-getUserRouter.post("/", function (req, res) { 
+getUserRouter.post("/", function (req, res) {  //public
 console.log("/api/v1/users POST creates a new user account");
 	
 

@@ -1,6 +1,7 @@
 import { createConnection } from "typeorm";
 import { Link } from "./src/backend/entities/link";
 import { Users } from "./src/backend/entities/user";
+import { Vote } from "./src/backend/entities/vote";
 
 export async function connecToDatabase() {
 
@@ -12,7 +13,8 @@ export async function connecToDatabase() {
 
     const entities = [
         Link,
-        Users
+        Users,
+        Vote
     ];
 
     const conn = await createConnection({
@@ -25,21 +27,21 @@ export async function connecToDatabase() {
         entities: entities,
         synchronize: true
     });
-    const userRepository = conn.getRepository(Users);
-      const userOne = await userRepository.findOne({
-        id: 1
-        });
-      //console.log(userOne);
-      if (userOne==undefined) {
-        await userRepository.save({
-         email: "albertoorozco2@hotmail.com",
-         password:"1234",
-         }); 
-         await userRepository.save({
-         email: "Pedroorozco7@hotmail.com",
-         password:"4456",
-         });     
-          }
+    // const userRepository = conn.getRepository(Users);
+    //   const userOne = await userRepository.findOne({
+    //     id: 1
+    //     });
+    //   //console.log(userOne);
+    //   if (userOne==undefined) {
+    //     await userRepository.save({
+    //      email: "albertoorozco2@hotmail.com",
+    //      password:"1234",
+    //      }); 
+    //      await userRepository.save({
+    //      email: "Pedroorozco7@hotmail.com",
+    //      password:"4456",
+    //      });     
+    //       }
     return conn; 
 
 }

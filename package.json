@@ -7,7 +7,7 @@
     "start": "ts-node index.ts",
     "test": "nyc --clean --all --require ts-node/register --require reflect-metadata/Reflect --extension .ts -- mocha --timeout 5000 **/*.test.ts"
   },
-  "author": "",
+  "author": "Alberto Orozco 2015253",
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "^4.1.2",
@@ -16,6 +16,7 @@
     "@types/mocha": "^5.0.0",
     "@types/node": "^9.6.4",
     "@types/supertest": "^2.0.4",
+    "@types/whatwg-fetch": "0.0.33",
     "chai": "^4.1.2",
     "mocha": "^5.0.5",
     "supertest": "^3.0.0",

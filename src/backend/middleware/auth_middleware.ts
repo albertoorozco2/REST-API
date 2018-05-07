@@ -32,8 +32,8 @@ export function authMiddleware(
                     if(token=== secret){};
                 } catch(e) {
                     // If cannot decode token, the user is unauthorized
-                    console.log("401 Unauthorized!");
-                    res.status(401).send("Unauthorized!");
+                    console.log("403 Forbidden!");
+                    res.status(403).send("Forbidden!");
                 }
                 // Attach current user to request objs
                 // Note that we don't need to do additional db queries

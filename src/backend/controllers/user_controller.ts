@@ -19,7 +19,6 @@ const usersRepository = getRepository();
 	}else{
 	
 		await usersRepository.find(newUser).then((users) => { 
-			// console.log(JSON.stringify(users));
 			if (JSON.stringify(users)!="[]") {
 				console.log(" 400 Bad Request! user already  in the system");
 				res.status(400).send(`Bad Request! user already  in the system`);
@@ -30,7 +29,6 @@ const usersRepository = getRepository();
 
 				usersRepository.find(newUser).then((users) => { 
 					res.json(newUser);
-				//res.send(`New User : `+ newUser.email +` Added!`);
 				}).catch((e: Error) => {
 					console.log(" 500 Internal Server Error! ");
 					res.status(500).send(e.message); 

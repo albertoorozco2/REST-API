@@ -30,7 +30,6 @@ export function getHandlers(_userRepository: Repository<Users>) {
                     res.status(401).send("Unathorized!");
                 } else {
                     const payload = { id: user.id };
-                    //const secret = process.env.AUTH_SECRET;
                     process.env.AUTH_SECRET = user.password;
                     const secret = process.env.AUTH_SECRET;
 

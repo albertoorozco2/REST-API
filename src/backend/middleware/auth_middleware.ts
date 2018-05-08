@@ -10,8 +10,6 @@ export function authMiddleware(
         console.log("Authorization authMiddleware");
         // Read token from request headers
         const token = req.headers["authorization"];
-        //console.log(req.headers);
-       // console.log(req.headers["authorization"]);
         // If no token not a string, it is an invalid request
         if (token === undefined || Array.isArray(token)) {
             console.log(" 400 Bad request!");
@@ -28,7 +26,6 @@ export function authMiddleware(
                 try {
                     // Decode token and get user id
                     decoded = jwt.verify(token, secret) as any;
-                    ////////////////////////////////////////////////////////////////////
                     if(token=== secret){};
                 } catch(e) {
                     // If cannot decode token, the user is unauthorized

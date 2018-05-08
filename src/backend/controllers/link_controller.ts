@@ -47,8 +47,7 @@ export function getHandlers(_linkRepository: Repository<Link>, _voteRepository: 
                     res.status(500).send(e.message); 
                 })
 
-                // const newLink = await _linkRepository.save({ user: user, title: title, url: url });
-                // return res.json(newLink);
+
             }            
         })();
 
@@ -76,7 +75,6 @@ export function getHandlers(_linkRepository: Repository<Link>, _voteRepository: 
                 res.status(400).send("Bad Request!");
 
             }else if(userOwner.user.id==userId){
-//                const linkFound = await _linkRepository.findOne({ where: { id: linkId }})
 
                 const linkDelete = await _linkRepository.remove(await _linkRepository.findOne({ where: { id: linkId }})).catch((e: Error) => {
                 console.log(" 500 Internal Server Error.");

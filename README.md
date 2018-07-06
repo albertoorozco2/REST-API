@@ -9,16 +9,16 @@ $ tsc --init
 
 You are going to need to change the default configuration in the tsconfig.json file to the following:
 
-{
- "compilerOptions": {
-   "target": "es5",
-   "module": "commonjs",
-   "lib": ["es2015"],
-   "strict": false,
-   "experimentalDecorators": true,
-   "emitDecoratorMetadata": true
- }
-}
+{  
+ "compilerOptions": {  
+   "target": "es5",  
+   "module": "commonjs",  
+   "lib": ["es2015"],  
+   "strict": false,  
+   "experimentalDecorators": true,  
+   "emitDecoratorMetadata": true  
+ }  
+}  
 
 
 

@@ -47,25 +47,16 @@ Directory architecture:
 ## Usage
 End points and Descriptions
 
-+----------------------------+-----------+------------------------------------------+--------+  
-| HTTP                       | MethodURL | Description                              | public |  
-+----------------------------+-----------+------------------------------------------+--------+  
-| /api/v1/tweets             | GET       | Return all tweet                         | yes    |  
-+----------------------------+-----------+------------------------------------------+--------+  
-| /api/v1/tweets             | POST      | Creates a new tweet                      | no     |  
-+----------------------------+-----------+------------------------------------------+--------+  
-| /api/v1/tweets/:id         | DELETE    | Deletes a tweet                          | no     |  
-+----------------------------+-----------+------------------------------------------+--------+  
-| /api/v1/tweets/:id/like    | POST      | Upvotes tweet                            | no     |  
-+----------------------------+-----------+------------------------------------------+--------+  
-| /api/v1/tweets/:id/retweet | POST      | Retweet tweet                            | no     |  
-+----------------------------+-----------+------------------------------------------+--------+  
-| /api/v1/auth/login         | POST      | Returns an auth token                    | yes    |  
-+----------------------------+-----------+------------------------------------------+--------+  
-| /api/v1/users              | POST      | Creates a new user account               | yes    |  
-+----------------------------+-----------+------------------------------------------+--------+  
-| /api/v1/user/tweets        | GET       | Returns all tweet created by logged user | yes    |  
-+----------------------------+-----------+------------------------------------------+--------+  
+| HTTP                       | MethodURL | DescriptionIs                            | public |
+|----------------------------|-----------|------------------------------------------|--------|
+| /api/v1/tweets             | GET       | Return all tweet                         | yes    |
+| /api/v1/tweets             | POST      | Creates a new tweet                      | no     |
+| /api/v1/tweets/:id         | DELETE    | Deletes a tweet                          | no     |
+| /api/v1/tweets/:id/like    | POST      | Upvotes tweet                            | no     |
+| /api/v1/tweets/:id/retweet | POST      | Retweet tweet                            | no     |
+| /api/v1/auth/login         | POST      | Returns an auth token                    | yes    |
+| /api/v1/users              | POST      | Creates a new user account               | yes    |
+| /api/v1/user/tweets        | GET       | Returns all tweet created by logged user | yes    |
   
 
 * user authentication using JWT tokens and middleware.
